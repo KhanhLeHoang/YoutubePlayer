@@ -54,7 +54,9 @@ const PlaylistItems = ({ route, navigation }) => {
         <View style={styles.container}>
             <ScrollView>
                 {playlistItems && playlistItems.map((item, id) =>
-                    <Pressable key={id}>
+                    <Pressable key={id} onPress={() => navigation.navigate('Player', {
+                        videoId: item.snippet.resourceId.videoId
+                    })}>
                         <Image style={styles.videoImg} source={{ uri: item.snippet.thumbnails.default.url }} />
                         <Text>{item.snippet.title}</Text>
                         <Text>{item.snippet.videoOwnerChannelTitle}</Text>

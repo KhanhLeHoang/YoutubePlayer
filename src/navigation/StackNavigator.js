@@ -9,6 +9,7 @@ import Home from "../screens/Home";
 import Playlists from "../screens/Playlists";
 import MyMusic from "../screens/MyMusic";
 import PlaylistItems from "../screens/PlaylistItems";
+import Player from "../screens/Player";
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,14 @@ export const HomeStackNavigator = () => {
                     headerRight: () => <GmailButton />,
                 }} />
             <Stack.Screen name="PlaylistItems" component={PlaylistItems}
+                options={({ route }) => ({
+                    title: route.params.playlistTitle,
+                    headerTitleAlign: 'center',
+                    // headerTitle: () => <LogoHeader />,
+                    headerRight: () => <GmailButton />,
+                })} />
+
+            <Stack.Screen name="Player" component={Player}
                 options={({ route }) => ({
                     title: route.params.playlistTitle,
                     headerTitleAlign: 'center',
