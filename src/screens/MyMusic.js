@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function ListAudio() {
+export default function MyMusic() {
     return (
         <View>
-            <Text>ListAudio</Text>
+            <Text>My music</Text>
         </View>
     )
 }
