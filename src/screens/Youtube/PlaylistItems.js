@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Pressable, ScrollView, Image } from 'react-native'
 import React from 'react'
-import { getServiceVideosPlaylist } from '../services'
+import { getServiceVideosPlaylist } from '../../services'
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { Octicons } from '@expo/vector-icons';
@@ -63,10 +63,13 @@ const PlaylistItems = ({ route, navigation }) => {
         xhr.onreadystatechange = function (e) {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const res = JSON.parse(xhr.response);
-                if (res.link)
+                if (res.status == "processing") {
+                    setTimeout(function () {
+                        handleOnPressDownload(id);
+                    }, 1000);
+                } else {
                     WebBrowser.openBrowserAsync(res.link);
-                else { console.log(res) }
-                // setLinkDownload(res.link)
+                }
             } else if (xhr.readyState === 4 && xhr.status === 401) {
                 console.log(">>> Error from get link")
             }
@@ -82,11 +85,15 @@ const PlaylistItems = ({ route, navigation }) => {
                     })}
                         style={styles.videoContainer}
                     >
-                        <Image style={styles.videoImg} source={{ uri: item.snippet.thumbnails.default.url }} />
+                        <Image style={styles.videoImg} source={{
+                            uri: item.snippet.thumbnails.maxres ? item.snippet.thumbnails.maxres.url :
+                                item.snippet.thumbnails.standard ? item.snippet.thumbnails.standard.url :
+                                    item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : item.snippet.thumbnails.default.url
+                        }} />
                         <View style={styles.videoDescription}>
                             <View style={styles.videoTxt}><Text style={styles.videoTitle}>{item.snippet.title}</Text>
                                 <Text style={styles.videoChannelTitle}>{item.snippet.videoOwnerChannelTitle}</Text></View>
-                            <View style={styles.downloadBtn}><Pressable onPress={() => mp3Conversion(item.snippet.resourceId.videoId)}><Octicons name="download" size={24} color="blue" /></Pressable></View>
+                            <View style={styles.downloadBtn}><Pressable onPress={() => handleOnPressDownload(item.snippet.resourceId.videoId)}><Octicons name="download" size={24} color="blue" /></Pressable></View>
                         </View>
                     </Pressable>
                 )}
@@ -108,6 +115,7 @@ const styles = StyleSheet.create({
         aspectRatio: 32 / 18,
         // borderRadius: 10
     }, downloadBtn: {
+        margin: 10,
         borderColor: 'blue',
         borderWidth: 1.5,
         borderRadius: 50,
@@ -116,7 +124,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     }, videoTxt: {
-        paddingBottom: 10
+        padding: 5,
+        paddingBottom: 20,
+        // backgroundColor: 'red',
+        maxWidth: 350,
     }, videoTitle: {
         // backgroundColor: 'red',
         // marginRight: 20
@@ -129,6 +140,5 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 5,
     }
 })

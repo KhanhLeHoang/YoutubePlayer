@@ -1,7 +1,7 @@
 import { StyleSheet, Text, Image, Pressable, View } from 'react-native';
 import React from 'react';
 import * as WebBrowser from 'expo-web-browser';
-import * as VARIABLE from '../variables';
+import * as VARIABLE from '../../variables';
 
 const Login = () => {
     const handleOnPressLogin = async () => {
@@ -10,7 +10,7 @@ const Login = () => {
 
     return (
         <View style={styles.container}>
-            <Image style={{ width: 200, height: 200, marginBottom: 100, marginTop: 40 }} source={require('../../assets/logo.png')} />
+            <Image style={{ width: 200, height: 200, marginBottom: 100, marginTop: 40 }} source={require('../../../assets/logo.png')} />
             <Pressable
                 onPress={handleOnPressLogin}
                 style={styles.buttonSignin}

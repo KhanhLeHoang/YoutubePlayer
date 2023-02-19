@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, Pressable, Image, TextInput } from 'react-nativ
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
-import { storeData, getData, storageClearData } from '../library/AsyncStore';
+import { storeData, getData, storageClearData } from '../../library/AsyncStore';
 import { useSelector, useDispatch } from 'react-redux';
-import { setAccess_token, setUserData, refreshToken } from '../redux/actions';
+import { setAccess_token, setUserData, refreshToken } from '../../redux/actions';
 import Login from './Login';
-import { getServicePlaylist, getServiceUserData, postServiceCodeForToken } from '../services';
+import { getServicePlaylist, getServiceUserData, postServiceCodeForToken } from '../../services';
 import { MaterialIcons } from '@expo/vector-icons';
 
 

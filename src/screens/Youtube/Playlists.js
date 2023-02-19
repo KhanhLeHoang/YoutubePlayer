@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, Pressable, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { refreshToken } from '../redux/actions';
+import { refreshToken } from '../../redux/actions';
 import { useState } from 'react';
-import { getServicePlaylist } from '../services';
+import { getServicePlaylist } from '../../services';
 
 const Playlists = ({ navigation }) => {
     const [playlistArray, setPlaylistArray] = useState([]);
