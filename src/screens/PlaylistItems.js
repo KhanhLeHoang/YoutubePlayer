@@ -3,6 +3,8 @@ import React from 'react'
 import { getServiceVideosPlaylist } from '../services'
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { Octicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
 
 const PlaylistItems = ({ route, navigation }) => {
     const [playlistItems, setPlaylistItems] = useState([])
@@ -27,23 +29,44 @@ const PlaylistItems = ({ route, navigation }) => {
     if (!playlistItems.length > 0)
         getVideos();
 
-    const handleOnPressDownload = () => {
-        if (linkDownload)
-            WebBrowser.openBrowserAsync(linkDownload);
+    function mp3Conversion(id) {
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://youtube-mp36.p.rapidapi.com/dl?id=" + id,
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-key": "eb66da6e7bmsh55aa308e1cb5168p18bfe3jsn8432b906ac22",
+                "x-rapidapi-host": "youtube-mp36.p.rapidapi.com"
+            }
+        };
+
+        $.ajax(settings).done(function (response) {
+            if (response.status == "processing") {
+                setTimeout(function () {
+                    mp3Conversion(id);
+                }, 1000);
+            } else {
+                console.log(response);
+            }
+        });
     }
 
-    const handleOnPressGetLink = () => {
+    const handleOnPressDownload = (videoId) => {
+        console.log(videoId)
         let xhr = new XMLHttpRequest();
         xhr.open('GET',
             'https://youtube-mp36.p.rapidapi.com/dl?' +
-            'id=' + 'rYH7Y-43SJc');
+            'id=' + videoId);
         xhr.setRequestHeader('x-rapidapi-host', 'youtube-mp36.p.rapidapi.com');
         xhr.setRequestHeader('x-rapidapi-key', 'eb66da6e7bmsh55aa308e1cb5168p18bfe3jsn8432b906ac22');
         xhr.onreadystatechange = function (e) {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const res = JSON.parse(xhr.response);
                 if (res.link)
-                    setLinkDownload(res.link)
+                    WebBrowser.openBrowserAsync(res.link);
+                else { console.log(res) }
+                // setLinkDownload(res.link)
             } else if (xhr.readyState === 4 && xhr.status === 401) {
                 console.log(">>> Error from get link")
             }
@@ -56,10 +79,15 @@ const PlaylistItems = ({ route, navigation }) => {
                 {playlistItems && playlistItems.map((item, id) =>
                     <Pressable key={id} onPress={() => navigation.navigate('Player', {
                         videoId: item.snippet.resourceId.videoId
-                    })}>
+                    })}
+                        style={styles.videoContainer}
+                    >
                         <Image style={styles.videoImg} source={{ uri: item.snippet.thumbnails.default.url }} />
-                        <Text>{item.snippet.title}</Text>
-                        <Text>{item.snippet.videoOwnerChannelTitle}</Text>
+                        <View style={styles.videoDescription}>
+                            <View style={styles.videoTxt}><Text style={styles.videoTitle}>{item.snippet.title}</Text>
+                                <Text style={styles.videoChannelTitle}>{item.snippet.videoOwnerChannelTitle}</Text></View>
+                            <View style={styles.downloadBtn}><Pressable onPress={() => mp3Conversion(item.snippet.resourceId.videoId)}><Octicons name="download" size={24} color="blue" /></Pressable></View>
+                        </View>
                     </Pressable>
                 )}
             </ScrollView>
@@ -79,5 +107,28 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 32 / 18,
         // borderRadius: 10
+    }, downloadBtn: {
+        borderColor: 'blue',
+        borderWidth: 1.5,
+        borderRadius: 50,
+        width: 30,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }, videoTxt: {
+        paddingBottom: 10
+    }, videoTitle: {
+        // backgroundColor: 'red',
+        // marginRight: 20
+    }, videoChannelTitle: {
+        fontSize: 10
+    }
+    , videoContainer: {
+
+    }, videoDescription: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 5,
     }
 })

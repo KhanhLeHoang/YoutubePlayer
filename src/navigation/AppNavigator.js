@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeStackNavigator, MyMusicStackNavigator } from './StackNavigator';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons'; import { Fontisto } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +24,10 @@ export default function AppNavigator() {
             <Tab.Screen name='MyMusicTab' component={MyMusicStackNavigator}
                 options={{
                     title: 'My music',
-                    headerShown: false
+                    headerShown: false,
+                    tabBarIcon: () => (
+                        <Fontisto name="music-note" size={24} color="gray" />
+                    ),
                 }}
             />
         </Tab.Navigator>
