@@ -29,29 +29,6 @@ const PlaylistItems = ({ route, navigation }) => {
     if (!playlistItems.length > 0)
         getVideos();
 
-    function mp3Conversion(id) {
-        const settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "https://youtube-mp36.p.rapidapi.com/dl?id=" + id,
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-key": "eb66da6e7bmsh55aa308e1cb5168p18bfe3jsn8432b906ac22",
-                "x-rapidapi-host": "youtube-mp36.p.rapidapi.com"
-            }
-        };
-
-        $.ajax(settings).done(function (response) {
-            if (response.status == "processing") {
-                setTimeout(function () {
-                    mp3Conversion(id);
-                }, 1000);
-            } else {
-                console.log(response);
-            }
-        });
-    }
-
     const handleOnPressDownload = (videoId) => {
         console.log(videoId)
         let xhr = new XMLHttpRequest();
@@ -88,12 +65,16 @@ const PlaylistItems = ({ route, navigation }) => {
                         <Image style={styles.videoImg} source={{
                             uri: item.snippet.thumbnails.maxres ? item.snippet.thumbnails.maxres.url :
                                 item.snippet.thumbnails.standard ? item.snippet.thumbnails.standard.url :
-                                    item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : item.snippet.thumbnails.default.url
+                                    item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : null
                         }} />
                         <View style={styles.videoDescription}>
                             <View style={styles.videoTxt}><Text style={styles.videoTitle}>{item.snippet.title}</Text>
                                 <Text style={styles.videoChannelTitle}>{item.snippet.videoOwnerChannelTitle}</Text></View>
-                            <View style={styles.downloadBtn}><Pressable onPress={() => handleOnPressDownload(item.snippet.resourceId.videoId)}><Octicons name="download" size={24} color="blue" /></Pressable></View>
+                            <View style={styles.downloadBtn}>
+                                <Pressable onPress={() => handleOnPressDownload(item.snippet.resourceId.videoId)}>
+                                    <Octicons name="download" size={24} color="gray" />
+                                </Pressable>
+                            </View>
                         </View>
                     </Pressable>
                 )}
@@ -116,7 +97,7 @@ const styles = StyleSheet.create({
         // borderRadius: 10
     }, downloadBtn: {
         margin: 10,
-        borderColor: 'blue',
+        borderColor: 'gray',
         borderWidth: 1.5,
         borderRadius: 50,
         width: 30,
@@ -126,11 +107,8 @@ const styles = StyleSheet.create({
     }, videoTxt: {
         padding: 5,
         paddingBottom: 20,
-        // backgroundColor: 'red',
         maxWidth: 350,
     }, videoTitle: {
-        // backgroundColor: 'red',
-        // marginRight: 20
     }, videoChannelTitle: {
         fontSize: 10
     }

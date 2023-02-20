@@ -1,8 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeStackNavigator, MyMusicStackNavigator } from './StackNavigator';
+import { HomeStackNavigator, PlaylistStackNavigator } from './StackNavigator';
 import { AntDesign } from '@expo/vector-icons'; import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+
+import AudioList from '../screens/Audio/AudioList';
+import Player from '../screens/Audio/Player';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,8 +35,8 @@ export default function AppNavigator() {
                 }}
             /> */}
             <Tab.Screen
-                name='AudioList'
-                component={MyMusicStackNavigator}
+                name='Audio List'
+                component={AudioList}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialIcons name='headset' size={size} color={color} />
@@ -42,7 +45,7 @@ export default function AppNavigator() {
             />
             <Tab.Screen
                 name='Player'
-                component={MyMusicStackNavigator}
+                component={Player}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome5 name='compact-disc' size={size} color={color} />
@@ -50,8 +53,8 @@ export default function AppNavigator() {
                 }}
             />
             <Tab.Screen
-                name='PlayList'
-                component={MyMusicStackNavigator}
+                name='Playlists'
+                component={PlaylistStackNavigator}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialIcons name='library-music' size={size} color={color} />

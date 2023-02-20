@@ -2,14 +2,15 @@ import React from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 
-import LogoHeader from '../Components/LogoHeader';
-import GmailButton from "../Components/GmailButton";
+import LogoHeader from '../components/LogoHeader';
+import GmailButton from "../components/GmailButton";
 
 import Home from "../screens/Youtube/Home";
-import Playlists from "../screens/Youtube/Playlists";
-import MyMusic from "../screens/Youtube/MyMusic";
+import Playlists from "../screens/Youtube/YoutubePlaylist";
 import PlaylistItems from "../screens/Youtube/PlaylistItems";
 import YoutubePlayer from "../screens/Youtube/YoutubePlayer";
+import SearchVideo from "../screens/Youtube/SearchVideo";
+
 import PlayListDetail from '../screens/Audio/PlayListDetail';
 import PlayList from '../screens/Audio/PlayList';
 
@@ -53,14 +54,20 @@ export const HomeStackNavigator = () => {
                     // headerTitle: () => <LogoHeader />,
                     headerRight: () => <GmailButton />,
                 })} />
+            <Stack.Screen name="Search" component={SearchVideo}
+                options={({ route }) => ({
+                    title: route.params.search,
+                    headerTitleAlign: 'center',
+                    // headerTitle: () => <LogoHeader />,
+                    headerRight: () => <GmailButton />,
+                })} />
         </Stack.Navigator>
     );
 }
 
-export const MyMusicStackNavigator = () => {
+export const PlaylistStackNavigator = () => {
     return (
-        <Stack.Navigator>
-            {/* <Stack.Screen name="MyMusic" component={MyMusic} options={{ title: 'My music' }} /> */}
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='PlayList' component={PlayList} />
             <Stack.Screen name='PlayListDetail' component={PlayListDetail} />
         </Stack.Navigator>

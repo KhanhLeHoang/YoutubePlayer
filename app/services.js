@@ -35,3 +35,11 @@ export const postServiceCodeForToken = (code) => {
         grant_type: 'authorization_code'
     })
 }
+
+export const postServiceRevokeToken = (access_token) => {
+    return axios.post(`https://oauth2.googleapis.com/revoke?token=${access_token}`)
+}
+
+export const getServiceSearchVideo = (search, pageToken = '') => {
+    return axios.get(`https://www.googleapis.com/youtube/v3/search?key=${VARIABLE.API_KEY}&q=${search}&part=snippet&maxResults=200&pageToken=${pageToken}`)
+}

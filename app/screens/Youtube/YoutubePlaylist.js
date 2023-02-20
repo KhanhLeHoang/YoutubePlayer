@@ -25,7 +25,7 @@ const Playlists = ({ navigation }) => {
                 }).catch(e => console.warn(e))
             } else {
                 console.log(error.response ? error.response : error)
-                console.warn("Error refresh token to get playlist (Playlist.js)")
+                console.warn("Error refresh token to get playlist (YoutubePlaylist.js)")
             }
         }
     }
@@ -47,7 +47,7 @@ const Playlists = ({ navigation }) => {
                                 source={{
                                     uri: item.snippet.thumbnails.maxres ? item.snippet.thumbnails.maxres.url :
                                         item.snippet.thumbnails.standard ? item.snippet.thumbnails.standard.url :
-                                            item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : item.snippet.thumbnails.default.url
+                                            item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : null
                                 }}
                                 resizeMode='stretch'
                             />

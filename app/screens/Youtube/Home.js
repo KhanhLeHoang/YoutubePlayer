@@ -7,19 +7,21 @@ import { storeData, getData, storageClearData } from '../../library/AsyncStore';
 import { useSelector, useDispatch } from 'react-redux';
 import { setAccess_token, setUserData, refreshToken } from '../../redux/actions';
 import Login from './Login';
-import { getServicePlaylist, getServiceUserData, postServiceCodeForToken } from '../../services';
+import { getServicePlaylist, getServiceUserData, postServiceCodeForToken, getServiceSearchVideo } from '../../services';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
 export default function Home({ navigation }) {
   const [playlistArray, setPlaylistArray] = useState([]);
+  const [textSearch, setTextSearch] = useState('');
 
   const { access_token, userData } = useSelector(state => state.reducer);
   const dispatch = useDispatch();
-  storageClearData();
+  // storageClearData();
 
-  // console.log('render: ', playlistArray)
+  console.log('render: ', playlistArray.length > 0)
   const url = Linking.useURL();
+  console.log(url)
   // const url = 'exp://192.168.0.102:19000?code=4/0AWgavdd-5ws74racBheZfqUV-K2DlESROHcqO0zXTcSCtPf6uszK3n6m7oGznAzVbL8dSQ&scope=profile%20https://www.googleapis.com/auth/youtube.readonly%20https://www.googleapis.com/auth/userinfo.profile';
   // storeData('refresh_token', '4/0AWtgzh44V5fsY9cD0I874AsdMOV1-0EMhnQf5p3fbPQm3qOiEgll_8ZfJDHNZ6KMbgfXnA');
 
@@ -27,7 +29,7 @@ export default function Home({ navigation }) {
     try {
       console.log('access_token: ', token);
       const { data } = await getServicePlaylist(token, 6);
-      console.log(data);
+      // console.log(data);
       setPlaylistArray(data.items);
     }
     catch (error) {
@@ -62,7 +64,7 @@ export default function Home({ navigation }) {
     }
   }
 
-  if (!playlistArray.length > 0) {
+  if (!userData && !access_token) {
     getData('refresh_token')
       .then(refresh_token_AsyncStorage => {
         if (refresh_token_AsyncStorage === null) {  // AsyncStorage dont have refresh_token
@@ -120,12 +122,38 @@ export default function Home({ navigation }) {
     }
   }
 
-  if (playlistArray.length > 0) {
+  const onSubmitSearch = async () => {
+    try {
+      console.log(textSearch)
+      const { data } = await getServiceSearchVideo(textSearch);
+      console.log(data.items.snippet)
+      if (data && data.items) {
+        navigation.navigate('Search', {
+          search: textSearch,
+          result: data
+        })
+      }
+    } catch (error) {
+      console.warn('Error submmit search in Home.js');
+      if (error && error.response && error.response.status) {
+        console.log(error.response)
+      } else {
+        console.log(error.response ? error.response : error)
+      }
+    }
+  }
+
+  if (userData && access_token) {//playlistArray.length > 0) {
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
           <MaterialIcons style={styles.searchIcon} name="search" size={24} color="black" />
-          <TextInput style={styles.searchInput} placeholder='Search for videos...' />
+          <TextInput style={styles.searchInput}
+            value={textSearch}
+            placeholder='Search for videos...'
+            onSubmitEditing={() => { onSubmitSearch() }}
+            onChangeText={(val) => { setTextSearch(val) }}
+          />
         </View>
         <View style={styles.playlistTextContainer}>
           <Text style={styles.title}>MY PLAYLIST</Text>
