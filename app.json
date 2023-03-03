@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "audio-player",
-    "slug": "audio-player",
+    "name": "YoutubePlayer",
+    "slug": "YoutubePlayer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,12 +21,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.hoangkhanh29.YoutubePlayer"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6787853a-18e3-4398-85d4-8b53d84dfade"
+      }
+    },
+    "scheme": "youtubeplayer"
   }
 }

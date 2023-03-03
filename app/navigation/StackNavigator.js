@@ -17,60 +17,60 @@ import PlayList from '../screens/Audio/PlayList';
 const Stack = createStackNavigator();
 
 export const HomeStackNavigator = () => {
-    const { access_token, userData } = useSelector(state => state.reducer);
+  const { access_token, userData } = useSelector(state => state.reducer);
 
-    return (
-        <Stack.Navigator
-            screenOptions={{
-                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            }}
-        >
-            <Stack.Screen name="Home" component={Home}
-                options={{
-                    headerTitleAlign: 'center',
-                    headerTitle: () => access_token && userData ? <LogoHeader /> : null,
-                    headerRight: () => <GmailButton />,
-                }}
-            />
-            <Stack.Screen name="Playlists" component={Playlists}
-                options={{
-                    title: 'My playlists',
-                    headerTitleAlign: 'center',
-                    // headerTitle: () => <LogoHeader />,
-                    headerRight: () => <GmailButton />,
-                }} />
-            <Stack.Screen name="PlaylistItems" component={PlaylistItems}
-                options={({ route }) => ({
-                    title: route.params.playlistTitle,
-                    headerTitleAlign: 'center',
-                    // headerTitle: () => <LogoHeader />,
-                    headerRight: () => <GmailButton />,
-                })} />
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
+      <Stack.Screen name="Home" component={Home}
+        options={{
+          headerTitleAlign: 'center',
+          headerTitle: () => access_token && userData ? <LogoHeader /> : null,
+          headerRight: () => <GmailButton />,
+        }}
+      />
+      <Stack.Screen name="Playlists" component={Playlists}
+        options={{
+          title: 'My playlists',
+          headerTitleAlign: 'center',
+          // headerTitle: () => <LogoHeader />,
+          headerRight: () => <GmailButton />,
+        }} />
+      <Stack.Screen name="PlaylistItems" component={PlaylistItems}
+        options={({ route }) => ({
+          title: route.params.playlistTitle,
+          headerTitleAlign: 'center',
+          // headerTitle: () => <LogoHeader />,
+          headerRight: () => <GmailButton />,
+        })} />
 
-            <Stack.Screen name="Player" component={YoutubePlayer}
-                options={({ route }) => ({
-                    title: route.params.playlistTitle,
-                    headerTitleAlign: 'center',
-                    // headerTitle: () => <LogoHeader />,
-                    headerRight: () => <GmailButton />,
-                })} />
-            <Stack.Screen name="Search" component={SearchVideo}
-                options={({ route }) => ({
-                    title: route.params.search,
-                    headerTitleAlign: 'center',
-                    // headerTitle: () => <LogoHeader />,
-                    headerRight: () => <GmailButton />,
-                })} />
-        </Stack.Navigator>
-    );
+      <Stack.Screen name="Player" component={YoutubePlayer}
+        options={({ route }) => ({
+          title: route.params.playlistTitle,
+          headerTitleAlign: 'center',
+          // headerTitle: () => <LogoHeader />,
+          headerRight: () => <GmailButton />,
+        })} />
+      <Stack.Screen name="Search" component={SearchVideo}
+        options={({ route }) => ({
+          title: "Search: \"" + route.params.search + "\"",
+          headerTitleAlign: 'center',
+          // headerTitle: () => <LogoHeader />,
+          headerRight: () => <GmailButton />,
+        })} />
+    </Stack.Navigator>
+  );
 }
 
 export const PlaylistStackNavigator = () => {
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='PlayList' component={PlayList} />
-            <Stack.Screen name='PlayListDetail' component={PlayListDetail} />
-        </Stack.Navigator>
-    );
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='PlayList' component={PlayList} />
+      <Stack.Screen name='PlayListDetail' component={PlayListDetail} />
+    </Stack.Navigator>
+  );
 }
 
